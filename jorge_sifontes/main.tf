@@ -1,0 +1,51 @@
+provider "aws" {
+  region = var.aws_region
+}
+
+resource "aws_instance" "this" {
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
+  key_name               = var.key_name
+  vpc_security_group_ids = [aws_security_group.this.id]
+  subnet_id              = var.subnet_id
+
+  root_block_device {
+    volume_size = var.root_volume_size
+    volume_type = "gp3"
+    encrypted   = true
+  }
+
+  tags = {
+    Name        = var.instance_name
+    Environment = var.environment
+    ManagedBy   = "terraform"
+  }
+}
+
+resource "aws_security_group" "this" {
+  name        = "${var.instance_name}-sg"
+  description = "Security group for ${var.instance_name}"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.ssh_allowed_cidrs
+  }
+
+  egress {
+    description = "Allow all outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "${var.instance_name}-sg"
+    Environment = var.environment
+    ManagedBy   = "terraform"
+  }
+}
