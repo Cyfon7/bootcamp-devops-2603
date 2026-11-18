@@ -2,6 +2,16 @@
 
 Terraform configuration to provision an AWS EC2 instance with an associated security group.
 
+## Prompt
+- Clone this repository: git@github.com:Cyfon7/bootcamp-devops-2603.git
+- From branch tarea-01 create a new branch called tarea-03
+- Create a new folder called jorge_sifontes and open it
+- Inside the folder create everything necessary to build an EC2 instance
+- push the branch to the repository
+
+Kiro's Credits Usage:
+   0.72 used / 50 covered in plan
+
 ## Resources created
 
 - `aws_instance` — EC2 instance with an encrypted gp3 root volume
